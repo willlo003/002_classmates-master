@@ -92,6 +92,7 @@ userController.signToken = (req, res, next) => {
 userController.verifyToken = (req, res, next) => {
   console.log("beginning of verifyToken");
   const token = req.cookies.token || "";
+  console.log("okokokokokokoko");
   if (!token) {
     return res.status(401).json("You need to Login");
   }
