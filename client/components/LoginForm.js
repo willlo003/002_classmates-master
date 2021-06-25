@@ -28,15 +28,15 @@ class LoginForm extends React.Component {
         "Content-Type": "Application/JSON",
       },
       body: JSON.stringify({
-        // name: this.state.username,
+        name: this.state.username,
         email: this.state.email,
         password: this.state.password,
       }),
     })
       .then((resp) => resp.json())
       .then((data) => {
-        if (data.hasOwnProperty("email")) {
-          alert(data.email);
+        if (data.hasOwnProperty("message")) {
+          alert(data.message);
         } else {
           this.props.toLogin();
           this.setState({

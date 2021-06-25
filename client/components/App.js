@@ -39,17 +39,21 @@ class App extends Component {
                   />
                 </Link>
               </div>
-              <div className="nav_item nav_item_flex">
-                <Link to="/" className="usernav_item nav_active">
-                  All groups
-                </Link>
-                <Link to="my_groups" className="usernav_item">
-                  My groups
-                </Link>
-                <a href="#" className="usernav_item">
-                  Profile
-                </a>
-              </div>
+              {this.state.isLoggedIn && (
+                <div className="nav_item nav_item_flex">
+                  <Link to="/" className="usernav_item nav_active">
+                    All groups
+                  </Link>
+
+                  <Link to="my_groups" className="usernav_item">
+                    My groups
+                  </Link>
+                  <a href="#" className="usernav_item">
+                    Profile
+                  </a>
+                </div>
+              )}
+
               <div className="nav_item u-right">
                 <Link to="/login" className="nav_item">
                   {this.state.isLoggedIn ? "Signout" : "Sign up / Log in"}

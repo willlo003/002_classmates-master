@@ -47,7 +47,7 @@ router.post(
 // 3) Respond with the user's joined group details
 router.get(
   "/mygroups",
-  userController.verifyToken,
+  //   userController.verifyToken,
   userController.getMyGroups,
   (req, res) => {
     console.log("4) After my groups are gotten");

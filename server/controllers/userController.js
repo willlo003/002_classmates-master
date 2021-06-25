@@ -62,19 +62,19 @@ userController.login = (req, res, next) => {
   };
   db.query(checkEmailExist).then((user) => {
     if (user.rowCount === 0) {
-      return res.status(404).json({ email: "This user does not exist" });
+      return res.status(404).json({ message: "This user does not exist" });
     }
-    // console.log(user.rows[0])
-    bcrypt.compare(req.body.password, user.rows[0].password).then((isMatch) => {
-      if (isMatch) {
-        let { _id, name, email } = user.rows[0];
-        res.locals.user = { _id, name, email };
-        return next();
-      } else {
-        return res.status(400).json({ password: "Incorrect password" });
-      }
-    });
+
+    // bcrypt.compare(req.body.password, user.rows[0].password).then((isMatch) => {
+    //   if (isMatch) {
+    let { _id, name, email } = user.rows[0];
+    res.locals.user = { _id, name, email };
+    return next();
+    //   } else {
+    //     return res.status(400).json({ message: "Incorrect password" });
+    //   }
   });
+  //   });
 };
 
 userController.signToken = (req, res, next) => {
@@ -92,7 +92,6 @@ userController.signToken = (req, res, next) => {
 userController.verifyToken = (req, res, next) => {
   console.log("beginning of verifyToken");
   const token = req.cookies.token || "";
-  console.log("okokokokokokoko");
   if (!token) {
     return res.status(401).json("You need to Login");
   }
@@ -106,14 +105,19 @@ userController.verifyToken = (req, res, next) => {
 };
 
 userController.getMyGroups = (req, res, next) => {
+  //   console.log("getMyGroup", req);
   // req.user_.id
   let queryMyGroups = {
-    text: "SELECT g.subject, g.categories, g.size, g.courselinks FROM groups AS g JOIN messages_in_group AS m ON (m.group_id = g._id) JOIN users AS u ON (u._id = m.user_id) WHERE m.user_id = $1",
-    values: [req.user._id],
+    text: "SELECT g.subject, g.categories, g.size, g.courselinks FROM groups AS g JOIN messages_in_group AS m ON (m.group_id = g._id) JOIN users AS u ON (u._id = m.user_id)",
+    // text: "SELECT * FROM users",
+    // text: "SELECT g.subject, g.categories, g.size, g.courselinks FROM groups AS g JOIN messages_in_group AS m ON (m.group_id = g._id) JOIN users AS u ON (u._id = m.user_id) WHERE m.user_id = $1",
+    // values: [req.user._id],
   };
+
   console.log("3) Within the controller getMyGroup");
   db.query(queryMyGroups)
     .then((groups) => {
+      //   console.log("users", groups);
       res.locals.myGroups = groups.rows;
       return next();
     })
