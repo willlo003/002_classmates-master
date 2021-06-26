@@ -7,6 +7,7 @@ import MyGroups from "./MyGroups";
 import CreateGroup from "./CreateGroup";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
+import auth from "../auth/auth";
 
 import ProtectedRoute from "./protectedRoutes/ProtectedRoute";
 
@@ -15,12 +16,49 @@ class App extends Component {
     super(props);
     this.state = {
       isLoggedIn: false,
+      name: "",
     };
     this.toLogin = this.toLogin.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
   toLogin() {
     this.setState({ isLoggedIn: true });
+  }
+
+  // when the user fresh the page, check whether logged in
+  componentDidMount() {
+    fetch("/api/user/protectedRoute", {
+      method: "GET",
+      headers: {
+        "Content-Type": "Applicatiomn/JSON",
+      },
+      body: JSON.stringify(),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log("userinformation", data.user.name);
+        // console.log("get someting", data.success);
+        if (data.success === "yes") {
+          auth.login(() => {});
+          this.setState({ isLoggedIn: true, name: data.user.name });
+        }
+      });
+  }
+
+  // logout function
+  logout() {
+    fetch("/api/user/logout", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "Applicatiomn/JSON",
+      },
+      body: JSON.stringify(),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        this.setState({ isLoggedIn: false, name: "" });
+      });
   }
 
   render() {
@@ -38,13 +76,15 @@ class App extends Component {
                     className="nav_item logo"
                   />
                 </Link>
+                {this.state.isLoggedIn && (
+                  <p className="user"> Welcome {this.state.name}</p>
+                )}
               </div>
               {this.state.isLoggedIn && (
                 <div className="nav_item nav_item_flex">
                   <Link to="/" className="usernav_item nav_active">
                     All groups
                   </Link>
-
                   <Link to="my_groups" className="usernav_item">
                     My groups
                   </Link>
@@ -55,7 +95,7 @@ class App extends Component {
               )}
 
               <div className="nav_item u-right">
-                <Link to="/login" className="nav_item">
+                <Link to="/login" className="nav_item" onClick={this.logout}>
                   {this.state.isLoggedIn ? "Signout" : "Sign up / Log in"}
                 </Link>
               </div>
@@ -67,11 +107,7 @@ class App extends Component {
                 <SignupForm toLogin={this.toLogin} />
               </Route>
               <ProtectedRoute exact path="/my_groups" component={MyGroups} />
-              <ProtectedRoute
-                exact
-                path="/group/create"
-                component={CreateGroup}
-              />
+              <ProtectedRoute exact path="/create" component={CreateGroup} />
               <Route exact path="/groups" component={Groups} />
               <Route exact path="/" component={Groups} />
               <Route path="/group/:id" component={GroupDetails} />

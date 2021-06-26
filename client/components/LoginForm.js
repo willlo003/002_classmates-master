@@ -5,6 +5,7 @@ import auth from "../auth/auth";
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       email: "",
       password: "",
@@ -43,6 +44,8 @@ class LoginForm extends React.Component {
             email: "",
             password: "",
           });
+          this.props.history.push("/my_groups");
+
           auth.login(() => {
             this.props.history.push("/my_groups");
           });

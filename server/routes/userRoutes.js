@@ -47,7 +47,7 @@ router.post(
 // 3) Respond with the user's joined group details
 router.get(
   "/mygroups",
-  //   userController.verifyToken,
+  userController.verifyToken,
   userController.getMyGroups,
   (req, res) => {
     console.log("4) After my groups are gotten");
@@ -60,8 +60,23 @@ router.get(
 // 2) Check if the user has the JWT token stored in the cookie on the frontend -> if yes, verify it along with the JWT secret
 // 3) Ultimately allowing the user to access the group creation form to make further post request,
 //    at api/group/create which can be referenced in the groupRoutes.js
-router.get("/mygroups/create", userController.verifyToken, (req, res) => {
+router.get("/create", userController.verifyToken, (req, res) => {
+  //   console.log(req.user);
   res.status(200).json({ success: "yes" });
+});
+
+// Remain login when refreshing the page
+// 1) get to /protectedRoute
+// 2) check the token whether expired or logged out already
+router.get("/protectedRoute", userController.verifyToken, (req, res) => {
+  res.status(200).json({ success: "yes", user: req.user });
+});
+
+// Logout
+// 1) Delete to /logout when user is logging on while the logout onClick
+// 2) delete the token send back to client
+router.delete("/logout", userController.deleteToken, (req, res) => {
+  res.status(200).json({ logout: true });
 });
 
 module.exports = router;

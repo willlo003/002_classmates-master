@@ -54,6 +54,14 @@ if (process.env.NODE_ENV === "production") {
     });
   });
 
+  app.get("/create", (req, res) => {
+    res.sendFile(path.join(__dirname, "../index.html"), (err) => {
+      if (err) {
+        next(err);
+      }
+    });
+  });
+
   app.use("*", (req, res, next) =>
     next({
       log: "Page is not found",

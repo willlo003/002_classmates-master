@@ -92,16 +92,29 @@ userController.signToken = (req, res, next) => {
 userController.verifyToken = (req, res, next) => {
   console.log("beginning of verifyToken");
   const token = req.cookies.token || "";
+  let jwtToken = jwt.decode(token);
   if (!token) {
     return res.status(401).json("You need to Login");
   }
-  jwt.verify(token, process.env.JWT_SECRET, (err, { _id, name, email }) => {
-    console.log("okok");
-    if (err) return res.status(500).json(err);
-    req.user = { _id, name, email };
-    console.log("2) user sucessfully verified token");
-    return next();
+  if (Date.now() > jwtToken.exp * 1000) {
+    return res.status(200).json({ success: "no" });
+  } else {
+    jwt.verify(token, process.env.JWT_SECRET, (err, { _id, name, email }) => {
+      if (err) return res.status(500).json(err);
+      req.user = { _id, name, email };
+      console.log("2) user sucessfully verified token");
+      return next();
+    });
+  }
+};
+
+userController.deleteToken = (req, res, next) => {
+  const token = "";
+  res.cookie("token", token, {
+    secure: false, // set to true if your using https
+    httpOnly: true,
   });
+  return next();
 };
 
 userController.getMyGroups = (req, res, next) => {

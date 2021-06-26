@@ -22,7 +22,7 @@ class MyGroups extends Component {
   render() {
     const { groups } = this.state;
     // console.log(this.state.groups);
-    console.log("this state", this.state.groups);
+    // console.log("this state", this.state.groups);
     return (
       <>
         <h1 className="u-center">Joined Groups</h1>
@@ -30,7 +30,7 @@ class MyGroups extends Component {
           <button
             className="button_pri"
             onClick={() => {
-              this.props.history.push("/group/create");
+              this.props.history.push("/create");
             }}
           >
             Create group
