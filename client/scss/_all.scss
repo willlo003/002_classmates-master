@@ -368,3 +368,43 @@ select {
   margin: 2rem auto;
   font-weight: normal;
 }
+
+.join_group {
+  width: 60px;
+  height: 20px;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: bold;
+  color: rgba(4, 136, 105, 0.973);
+  background: white;
+  border: 0.5px solid rgba(4, 136, 105, 0.973);
+  box-shadow: 2px 2px 0 rgba(4, 136, 105, 0.973),
+    -2px -2px 0 rgba(4, 136, 105, 0.973), -2px 2px 0 rgba(4, 136, 105, 0.973),
+    2px -2px 0 rgba(4, 136, 105, 0.973);
+  transition: 500ms ease-in-out;
+}
+
+.join_group:hover {
+  box-shadow: 10px 2.5px 0 rgba(33, 97, 81, 0.863),
+    -10px -2.5px 0 rgba(33, 97, 81, 0.863);
+}
+
+.quit_group {
+  width: 60px;
+  height: 20px;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: bold;
+  color: rgba(124, 32, 89, 0.973);
+  background: white;
+  border: 0.5px solid rgba(148, 43, 108, 0.863);
+  box-shadow: 2px 2px 0 rgba(148, 43, 108, 0.863),
+    -2px -2px 0 rgba(148, 43, 108, 0.863), -2px 2px 0 rgba(148, 43, 108, 0.863),
+    2px -2px 0 rgba(148, 43, 108, 0.863);
+  transition: 500ms ease-in-out;
+}
+
+.quit_group:hover {
+  box-shadow: 10px 2.5px 0 rgba(80, 7, 52, 0.863),
+    -10px -2.5px 0 rgba(80, 7, 52, 0.863);
+}

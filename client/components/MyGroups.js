@@ -5,24 +5,27 @@ import Group from "./Group";
 class MyGroups extends Component {
   constructor(props) {
     super(props);
-    this.state = { groups: [] };
+    this.state = { groups: [], joinedID: [] };
     // this.handleClick = this.handleClick.bind(this)
   }
   componentDidMount() {
     fetch("/api/user/mygroups", { credentials: "include" })
       .then((res) => res.json())
       .then((groups) => {
+        let joinedID = [];
+        groups.forEach((gp) => {
+          joinedID.push(gp._id);
+        });
+        // console.log(groups);
         this.setState(() => {
-          return { groups };
+          return { groups, joinedID };
         });
       })
       .catch((err) => "You are not authorized");
   }
 
   render() {
-    const { groups } = this.state;
-    // console.log(this.state.groups);
-    // console.log("this state", this.state.groups);
+    const { groups, joinedID } = this.state;
     return (
       <>
         <h1 className="u-center">Joined Groups</h1>
@@ -37,8 +40,8 @@ class MyGroups extends Component {
           </button>
         </div>
         <div className="group_section">
-          {groups.map((group, id) => (
-            <Group {...group} id={id} key={group._id} />
+          {groups.map((group) => (
+            <Group {...group} key={group._id} joinedID={joinedID} />
           ))}
         </div>
       </>

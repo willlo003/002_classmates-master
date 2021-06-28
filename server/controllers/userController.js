@@ -1,6 +1,7 @@
 const db = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { ids } = require("webpack");
 
 const userController = {};
 
@@ -118,19 +119,20 @@ userController.deleteToken = (req, res, next) => {
 };
 
 userController.getMyGroups = (req, res, next) => {
-  //   console.log("getMyGroup", req);
-  // req.user_.id
+  let action = "SELECT * FROM messages_in_group";
+  db.query(action).then((groups) => {
+    // console.log("group message", groups.rows);
+  });
+
   let queryMyGroups = {
-    text: "SELECT g.subject, g.categories, g.size, g.courselinks FROM groups AS g JOIN messages_in_group AS m ON (m.group_id = g._id) JOIN users AS u ON (u._id = m.user_id)",
-    // text: "SELECT * FROM users",
-    // text: "SELECT g.subject, g.categories, g.size, g.courselinks FROM groups AS g JOIN messages_in_group AS m ON (m.group_id = g._id) JOIN users AS u ON (u._id = m.user_id) WHERE m.user_id = $1",
-    // values: [req.user._id],
+    text: "SELECT g._id, g.subject, g.categories, g.size, g.courselinks FROM groups AS g JOIN messages_in_group AS m ON (m.group_id = g._id) JOIN users AS u ON (u._id = m.user_id) WHERE m.user_id = $1",
+    values: [req.user._id],
   };
 
   console.log("3) Within the controller getMyGroup");
   db.query(queryMyGroups)
     .then((groups) => {
-      //   console.log("users", groups);
+      //   console.log("myGroup", groups.rows);
       res.locals.myGroups = groups.rows;
       return next();
     })
@@ -138,6 +140,46 @@ userController.getMyGroups = (req, res, next) => {
       console.log(err);
       return next(err);
     });
+};
+
+//allow user join group
+userController.joinGroup = (req, res, next) => {
+  // verify user logging in
+  jwt.verify(
+    req.cookies.token,
+    process.env.JWT_SECRET,
+    (err, { _id, name, email }) => {
+      if (err) return res.status(500).json(err);
+      req.user = { _id, name, email };
+    }
+  );
+  let { _id, name } = req.user;
+  let groupID = req.body.groupID;
+
+  let querryJoinedGroup = `INSERT INTO messages_in_group (group_id, user_id, messages)
+VALUES (${groupID}, ${_id}, 'ref created')`;
+  db.query(querryJoinedGroup).then((currentGroup) => {
+    return next();
+  });
+};
+
+userController.quitGroup = (req, res, next) => {
+  // verify user logging in
+  jwt.verify(
+    req.cookies.token,
+    process.env.JWT_SECRET,
+    (err, { _id, name, email }) => {
+      if (err) return res.status(500).json(err);
+      req.user = { _id, name, email };
+    }
+  );
+  let { _id, name } = req.user;
+  let groupID = req.body.groupID;
+
+  let querryJoinedGroup = `DELETE FROM messages_in_group WHERE group_id='${groupID}' and user_id='${_id}'`;
+  db.query(querryJoinedGroup).then((currentGroup) => {
+    return next();
+  });
 };
 
 module.exports = userController;

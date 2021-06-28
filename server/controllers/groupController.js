@@ -5,9 +5,9 @@ groupController.getGroups = (req, res, next) => {
   let queryGroups = {
     text: `SELECT _id, subject, categories, size, courselinks FROM groups`,
   };
-  console.log("getGroup");
   db.query(queryGroups)
     .then((groups) => {
+      // console.log("getGroup", groups.rows);
       res.locals.groups = groups.rows;
       return next();
     })

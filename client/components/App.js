@@ -14,6 +14,7 @@ import ProtectedRoute from "./protectedRoutes/ProtectedRoute";
 class App extends Component {
   constructor(props) {
     super(props);
+    this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
     this.state = {
       isLoggedIn: false,
       name: "",
@@ -24,6 +25,10 @@ class App extends Component {
 
   toLogin() {
     this.setState({ isLoggedIn: true });
+  }
+
+  forceUpdateHandler() {
+    this.forceUpdate();
   }
 
   // when the user fresh the page, check whether logged in
@@ -43,6 +48,7 @@ class App extends Component {
           auth.login(() => {});
           this.setState({ isLoggedIn: true, name: data.user.name });
         }
+        this.forceUpdateHandler;
       });
   }
 
@@ -108,8 +114,23 @@ class App extends Component {
               </Route>
               <ProtectedRoute exact path="/my_groups" component={MyGroups} />
               <ProtectedRoute exact path="/create" component={CreateGroup} />
-              <Route exact path="/groups" component={Groups} />
-              <Route exact path="/" component={Groups} />
+              <Route
+                exact
+                path="/groups"
+                isLoggedIn={this.state.isLoggedIn}
+                render={(props) => (
+                  <Groups {...props} isLoggedIn={this.state.isLoggedIn} />
+                )}
+              />
+              <Route
+                exact
+                path="/"
+                isLoggedIn={this.state.isLoggedIn}
+                render={(props) => (
+                  <Groups {...props} isLoggedIn={this.state.isLoggedIn} />
+                )}
+              />
+
               <Route path="/group/:id" component={GroupDetails} />
             </Switch>
           </div>

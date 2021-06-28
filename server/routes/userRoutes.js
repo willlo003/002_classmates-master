@@ -55,6 +55,18 @@ router.get(
   }
 );
 
+// Joining group:
+router.post("/joinGroup", userController.joinGroup, (req, res) => {
+  console.log("joined the group");
+  res.status(200).json("joined the group");
+});
+
+// quit group;
+router.post("/quitGroup", userController.quitGroup, (req, res) => {
+  console.log("quit the qroup");
+  res.status(200).json("quit the group");
+});
+
 // Private Route to create groups
 // 1) GET to mygroups/create so that the user can access the group creation form on the frontend
 // 2) Check if the user has the JWT token stored in the cookie on the frontend -> if yes, verify it along with the JWT secret
