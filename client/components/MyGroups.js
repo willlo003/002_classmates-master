@@ -5,8 +5,8 @@ import Group from "./Group";
 class MyGroups extends Component {
   constructor(props) {
     super(props);
-    this.state = { groups: [], joinedID: [] };
-    // this.handleClick = this.handleClick.bind(this)
+    this.state = { groups: [], joinedID: [], isLoggedIn: true };
+    this.handleClick = this.handleClick.bind(this);
   }
   componentDidMount() {
     fetch("/api/user/mygroups", { credentials: "include" })
@@ -22,6 +22,13 @@ class MyGroups extends Component {
         });
       })
       .catch((err) => "You are not authorized");
+  }
+
+  handleClick(id) {
+    let newGroups = this.state.groups.filter((gp) => gp._id !== id);
+    let newJoinedID = this.state.joinedID.filter((_id) => _id !== id);
+    this.setState({ groups: newGroups, joinedID: newJoinedID });
+    console.log(this.state);
   }
 
   render() {
@@ -41,7 +48,13 @@ class MyGroups extends Component {
         </div>
         <div className="group_section">
           {groups.map((group) => (
-            <Group {...group} key={group._id} joinedID={joinedID} />
+            <Group
+              {...group}
+              key={group._id}
+              joinedID={joinedID}
+              isLoggedIn={this.state.isLoggedIn}
+              handleClick={this.handleClick}
+            />
           ))}
         </div>
       </>

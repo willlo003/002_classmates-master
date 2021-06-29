@@ -39,7 +39,7 @@ class LoginForm extends React.Component {
         if (data.hasOwnProperty("message")) {
           alert(data.message);
         } else {
-          this.props.toLogin();
+          this.props.toLogin(data);
           this.setState({
             email: "",
             password: "",

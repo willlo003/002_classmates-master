@@ -55,6 +55,7 @@ class Group extends Component {
       .then((res) => res.json())
       .then((data) => {
         this.setState({ joined: false });
+        this.props.handleClick(this.props._id);
       });
   }
 

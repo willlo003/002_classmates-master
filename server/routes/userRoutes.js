@@ -32,7 +32,7 @@ router.post(
   userController.signToken,
   (req, res) => {
     console.log("1) user sucessfully logged in");
-    res.status(200).json({ sucess: "yes" });
+    res.status(200).json(res.locals.user);
   }
 );
 

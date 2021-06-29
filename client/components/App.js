@@ -23,8 +23,9 @@ class App extends Component {
     this.logout = this.logout.bind(this);
   }
 
-  toLogin() {
-    this.setState({ isLoggedIn: true });
+  toLogin(data) {
+    // console.log("this is in the toLogin", data);
+    this.setState({ isLoggedIn: true, name: data.name });
   }
 
   forceUpdateHandler() {
@@ -68,7 +69,7 @@ class App extends Component {
   }
 
   render() {
-    console.log("is userLoggedIn? ", this.state.isLoggedIn);
+    console.log("is userLoggedIn? ", this.state.isLoggedIn, this.state.user);
     return (
       <div className="container">
         <BrowserRouter>
@@ -113,11 +114,17 @@ class App extends Component {
                 <SignupForm toLogin={this.toLogin} />
               </Route>
               <ProtectedRoute exact path="/my_groups" component={MyGroups} />
+              {/* <ProtectedRoute
+                exact
+                path="/my_groups"
+                render={(props) => (
+                  <MyGroups {...props} isLoggedIn={this.state.isLoggedIn} />
+                )}
+              /> */}
               <ProtectedRoute exact path="/create" component={CreateGroup} />
               <Route
                 exact
                 path="/groups"
-                isLoggedIn={this.state.isLoggedIn}
                 render={(props) => (
                   <Groups {...props} isLoggedIn={this.state.isLoggedIn} />
                 )}
