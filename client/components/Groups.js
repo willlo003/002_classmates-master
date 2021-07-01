@@ -5,35 +5,30 @@ class Groups extends Component {
   constructor(props) {
     super(props);
     this.state = { groups: [], joinedID: [] };
-    // this.handleClick = this.handleClick.bind(this)
+    this.handleClick = this.handleClick.bind(this);
   }
-  componentDidMount() {
-    fetch("/api/group")
-      .then((res) => res.json())
-      .then((groups) => {
-        // console.log(groups)
-        this.setState(() => {
-          return { groups };
-        });
-      });
 
-    fetch("/api/user/mygroups", { credentials: "include" })
-      .then((res) => res.json())
-      .then((groups) => {
-        let joinedID = [];
-        groups.forEach((gp) => {
-          joinedID.push(gp._id);
-        });
-        // console.log(joinedID);
-        this.setState(() => {
-          return { joinedID };
-        });
+  componentDidMount() {
+    Promise.all([
+      fetch("/api/user/mygroups").then((res) => res.json()),
+      fetch("/api/group").then((res) => res.json()),
+    ]).then(([joined, groups]) => {
+      let joinedID = [];
+      joined.forEach((gp) => joinedID.push(gp._id));
+      this.setState({
+        groups,
+        joinedID,
       });
+    });
+  }
+
+  handleClick(id) {
+    let newJoinedID = this.state.joinedID.filter((_id) => _id !== id);
+    this.setState({ joinedID: newJoinedID });
   }
 
   render() {
     const { groups, joinedID } = this.state;
-    // console.log(groups, joinedID);
     return (
       <>
         <img src="/assets/1.jpeg" alt="banner" className="banner" />
@@ -42,13 +37,13 @@ class Groups extends Component {
         </h2>
         <h1 className="u-center">Available Groups</h1>
         <div className="group_section">
-          {/* <button onClick={() => { this.props.history.push("/login") } } >Login</button> */}
           {groups.map((group) => (
             <Group
               {...group}
               key={group._id}
               joinedID={joinedID}
               isLoggedIn={this.props.isLoggedIn}
+              handleClick={this.handleClick}
             />
           ))}
         </div>

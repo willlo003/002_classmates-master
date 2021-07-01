@@ -14,10 +14,10 @@ import ProtectedRoute from "./protectedRoutes/ProtectedRoute";
 class App extends Component {
   constructor(props) {
     super(props);
-    this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
     this.state = {
       isLoggedIn: false,
       name: "",
+      joinedID: [],
     };
     this.toLogin = this.toLogin.bind(this);
     this.logout = this.logout.bind(this);
@@ -26,10 +26,6 @@ class App extends Component {
   toLogin(data) {
     // console.log("this is in the toLogin", data);
     this.setState({ isLoggedIn: true, name: data.name });
-  }
-
-  forceUpdateHandler() {
-    this.forceUpdate();
   }
 
   // when the user fresh the page, check whether logged in
@@ -43,13 +39,11 @@ class App extends Component {
     })
       .then((res) => res.json())
       .then((data) => {
-        // console.log("userinformation", data.user.name);
-        // console.log("get someting", data.success);
         if (data.success === "yes") {
           auth.login(() => {});
           this.setState({ isLoggedIn: true, name: data.user.name });
+          console.log("after setState joinedID", this.state);
         }
-        this.forceUpdateHandler;
       });
   }
 
@@ -109,36 +103,32 @@ class App extends Component {
             </div>
 
             <Switch>
+              <ProtectedRoute
+                exact
+                path="/group/:id"
+                component={GroupDetails}
+              />
               <Route exact path="/login">
                 <LoginForm toLogin={this.toLogin} />
                 <SignupForm toLogin={this.toLogin} />
               </Route>
               <ProtectedRoute exact path="/my_groups" component={MyGroups} />
-              {/* <ProtectedRoute
-                exact
-                path="/my_groups"
-                render={(props) => (
-                  <MyGroups {...props} isLoggedIn={this.state.isLoggedIn} />
-                )}
-              /> */}
+
               <ProtectedRoute exact path="/create" component={CreateGroup} />
-              <Route
+              {/* <Route
                 exact
                 path="/groups"
                 render={(props) => (
                   <Groups {...props} isLoggedIn={this.state.isLoggedIn} />
                 )}
-              />
+              /> */}
               <Route
                 exact
                 path="/"
-                isLoggedIn={this.state.isLoggedIn}
                 render={(props) => (
                   <Groups {...props} isLoggedIn={this.state.isLoggedIn} />
                 )}
               />
-
-              <Route path="/group/:id" component={GroupDetails} />
             </Switch>
           </div>
         </BrowserRouter>

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter, Link } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 
 class Group extends Component {
   constructor(props) {
@@ -11,13 +11,6 @@ class Group extends Component {
 
   componentDidMount() {
     if (this.props.joinedID.indexOf(this.props._id) !== -1) {
-      this.setState({ joined: true });
-    } else {
-      this.setState({ joined: false });
-    }
-  }
-  componentWillReceiveProps(newProps) {
-    if (newProps.joinedID.indexOf(this.props._id) !== -1) {
       this.setState({ joined: true });
     } else {
       this.setState({ joined: false });
@@ -79,36 +72,30 @@ class Group extends Component {
     }
     return (
       <div className="group_section_card">
-        <BrowserRouter>
-          <div className="card_img_section">
-            <Link to={`/group/${_id}`}>
-              <img
-                src={`https://picsum.photos/id/${_id || id}/300/200`}
-                className="card_img"
-              />
-            </Link>
-            <div className="overlay"></div>
-          </div>
-          <div className="card_content">
-            <h4>{subject}</h4>
-            <h5 className="onespace">Size of classroom: {size}</h5>
-            <h5 className="courselink">
-              <a href={courselinks}>Check Udemy course &rarr;</a>
-            </h5>
-            <br></br>
-            {ActionButton}
-            {/* {!this.state.joined && (
-              <button onClick={this.join} className="join_group">
-                join
-              </button>
-            )}
-            {this.state.joined && (
-              <button onClick={this.quit} className="quit_group">
-                quit
-              </button>
-            )} */}
-          </div>
-        </BrowserRouter>
+        <div className="card_img_section">
+          <Link
+            to={{
+              pathname: `/group/${_id}`,
+              state: {
+                joined: this.state.joined,
+              },
+            }}
+          >
+            <img
+              src={`https://picsum.photos/id/${_id || id}/300/200`}
+              className="card_img"
+            />
+          </Link>
+        </div>
+        <div className="card_content">
+          <h4>{subject}</h4>
+          <h5 className="onespace">Size of classroom: {size}</h5>
+          <h5 className="courselink">
+            <a href={courselinks}>Check Udemy course &rarr;</a>
+          </h5>
+          <br></br>
+          {ActionButton}
+        </div>
       </div>
     );
   }

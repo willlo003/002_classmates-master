@@ -28,7 +28,6 @@ class MyGroups extends Component {
     let newGroups = this.state.groups.filter((gp) => gp._id !== id);
     let newJoinedID = this.state.joinedID.filter((_id) => _id !== id);
     this.setState({ groups: newGroups, joinedID: newJoinedID });
-    console.log(this.state);
   }
 
   render() {
