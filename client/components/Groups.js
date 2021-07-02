@@ -9,17 +9,28 @@ class Groups extends Component {
   }
 
   componentDidMount() {
-    Promise.all([
-      fetch("/api/user/mygroups").then((res) => res.json()),
-      fetch("/api/group").then((res) => res.json()),
-    ]).then(([joined, groups]) => {
-      let joinedID = [];
-      joined.forEach((gp) => joinedID.push(gp._id));
-      this.setState({
-        groups,
-        joinedID,
+    if (this.props.isLoggedIn === false) {
+      fetch("/api/group")
+        .then((res) => res.json())
+        .then((groups) => {
+          // console.log(groups)
+          this.setState(() => {
+            return { groups };
+          });
+        });
+    } else {
+      Promise.all([
+        fetch("/api/user/mygroups").then((res) => res.json()),
+        fetch("/api/group").then((res) => res.json()),
+      ]).then(([joined, groups]) => {
+        let joinedID = [];
+        joined.forEach((gp) => joinedID.push(gp._id));
+        this.setState({
+          groups,
+          joinedID,
+        });
       });
-    });
+    }
   }
 
   handleClick(id) {

@@ -66,16 +66,16 @@ userController.login = (req, res, next) => {
       return res.status(404).json({ message: "This user does not exist" });
     }
 
-    // bcrypt.compare(req.body.password, user.rows[0].password).then((isMatch) => {
-    //   if (isMatch) {
-    let { _id, name, email } = user.rows[0];
-    res.locals.user = { _id, name, email };
-    return next();
-    //   } else {
-    //     return res.status(400).json({ message: "Incorrect password" });
-    //   }
+    bcrypt.compare(req.body.password, user.rows[0].password).then((isMatch) => {
+      if (isMatch) {
+        let { _id, name, email } = user.rows[0];
+        res.locals.user = { _id, name, email };
+        return next();
+      } else {
+        return res.status(400).json({ message: "Incorrect password" });
+      }
+    });
   });
-  //   });
 };
 
 userController.signToken = (req, res, next) => {

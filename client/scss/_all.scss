@@ -252,10 +252,11 @@ h5 {
 }
 
 input[type="text"],
+input[type="password"],
 select {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
+  width: 80%;
+  padding: 8px 6px;
+  margin: 3px 0px;
   display: inline-block;
   border: 1px solid #e6e6eb;
   border-radius: 4px;
@@ -407,4 +408,120 @@ select {
 .quit_group:hover {
   box-shadow: 10px 2.5px 0 rgba(80, 7, 52, 0.863),
     -10px -2.5px 0 rgba(80, 7, 52, 0.863);
+}
+
+.strength-meter {
+  position: relative;
+  height: 5px;
+  background: #ddd;
+  margin: 3px 2px;
+  border-radius: 2px;
+}
+.strength-meter:before,
+.strength-meter:after {
+  content: "";
+  height: inherit;
+  background: transparent;
+  display: block;
+  border-color: #fff;
+  border-style: solid;
+  border-width: 0 6px 0;
+  position: absolute;
+  width: calc(20% + 6px);
+  z-index: 10;
+}
+.strength-meter:before {
+  left: calc(20% - 3px);
+}
+.strength-meter:after {
+  right: calc(20% - 3px);
+}
+
+.strength-meter-fill {
+  background: transparent;
+  height: inherit;
+  position: absolute;
+  width: 20%;
+  background: darkred;
+  border-radius: inherit;
+  transition: width 0.5s ease-in-out, background 0.25s;
+}
+.strength-meter-fill[data-strength="0"] {
+  width: 20%;
+  background: darkred;
+}
+.strength-meter-fill[data-strength="1"] {
+  width: 40%;
+  background: orangered;
+}
+.strength-meter-fill[data-strength="2"] {
+  width: 60%;
+  background: orange;
+}
+.strength-meter-fill[data-strength="3"] {
+  width: 80%;
+  background: yellowgreen;
+}
+.strength-meter-fill[data-strength="4"] {
+  width: 100%;
+  background: green;
+}
+
+.strength-value {
+  font-size: 1.5rem;
+  transition: color 0.25s;
+  color: darkred;
+}
+.strength-value[data-strength="0"] {
+  color: darkred;
+}
+.strength-value[data-strength="1"] {
+  color: orangered;
+}
+.strength-value[data-strength="2"] {
+  color: orange;
+}
+.strength-value[data-strength="3"] {
+  color: yellowgreen;
+}
+.strength-value[data-strength="4"] {
+  color: green;
+}
+
+.form-hint {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+  text-align: justify;
+}
+
+.login_form,
+.signup_form {
+  width: 500px;
+  margin: 10px auto;
+  text-align: center;
+}
+
+.login_button,
+.signup_button {
+  color: #494949 !important;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #ffffff;
+  padding: 8px;
+  margin: 5px;
+  border: 2px solid #494949 !important;
+  display: inline-block;
+  transition: all 0.4s ease 0s;
+}
+
+.login_button:hover,
+.signup_button:hover {
+  color: #ffffff !important;
+  background: #f6b93b;
+  border-color: #f6b93b !important;
+  transition: all 0.4s ease 0s;
+}
+
+hr {
+  width: 40%;
 }

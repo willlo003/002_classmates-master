@@ -26,7 +26,8 @@
     "react-router-dom": "^5.2.0",
     "sass-loader": "^9.0.2",
     "style-loader": "^1.2.1",
-    "xterm": "^4.8.1"
+    "xterm": "^4.8.1",
+    "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",
