@@ -7,7 +7,7 @@ class GroupDetails extends Component {
     this.quit = this.quit.bind(this);
     this.state = { joined: this.props.location.state.joined };
   }
-  componentDidMount() {
+  UNSAFE_componentWillMount() {
     const {
       match: { params },
     } = this.props;

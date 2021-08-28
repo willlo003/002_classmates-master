@@ -26,7 +26,7 @@ class CreateGroup extends React.Component {
     // this.renderErrors = this.renderErrors.bind(this);
   }
 
-  componentDidMount() {
+  UNSAFE_componentWillMount() {
     fetch("/api/user/create", { credentials: "include" })
       .then((res) => res.json())
       .then((data) => console.log("successobj", data))

@@ -9,7 +9,7 @@ class Group extends Component {
     this.state = { joined: false };
   }
 
-  componentDidMount() {
+  UNSAFE_componentWillMount() {
     if (this.props.joinedID.indexOf(this.props._id) !== -1) {
       this.setState({ joined: true });
     } else {

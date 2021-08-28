@@ -29,7 +29,7 @@ class App extends Component {
   }
 
   // when the user fresh the page, check whether logged in
-  componentDidMount() {
+  UNSAFE_componentWillMount() {
     fetch("/api/user/protectedRoute", {
       method: "GET",
       headers: {
@@ -42,7 +42,7 @@ class App extends Component {
         if (data.success === "yes") {
           auth.login(() => {});
           this.setState({ isLoggedIn: true, name: data.user.name });
-          console.log("after setState joinedID", this.state);
+          // console.log("after setState joinedID", this.state);
         }
       });
   }

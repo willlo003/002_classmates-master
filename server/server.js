@@ -30,39 +30,7 @@ if (process.env.NODE_ENV === "production") {
   // statically serve everything in the build folder on the route '/build'
   app.use("/build", express.static(path.join(__dirname, "../build")));
   app.use("/assets", express.static(path.join(__dirname, "../client/assets/")));
-  app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "../index.html"), (err) => {
-      if (err) {
-        next(err);
-      }
-    });
-  });
-
-  app.get("/login", (req, res) => {
-    res.sendFile(path.join(__dirname, "../index.html"), (err) => {
-      if (err) {
-        next(err);
-      }
-    });
-  });
-
-  app.get("/my_groups", (req, res) => {
-    res.sendFile(path.join(__dirname, "../index.html"), (err) => {
-      if (err) {
-        next(err);
-      }
-    });
-  });
-
-  app.get("/create", (req, res) => {
-    res.sendFile(path.join(__dirname, "../index.html"), (err) => {
-      if (err) {
-        next(err);
-      }
-    });
-  });
-
-  app.get("/:id", (req, res) => {
+  app.get("/**", (req, res) => {
     res.sendFile(path.join(__dirname, "../index.html"), (err) => {
       if (err) {
         next(err);

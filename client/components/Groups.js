@@ -8,7 +8,7 @@ class Groups extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  componentDidMount() {
+  UNSAFE_componentWillMount() {
     if (this.props.isLoggedIn === false) {
       fetch("/api/group")
         .then((res) => res.json())

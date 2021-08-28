@@ -8,7 +8,7 @@ class MyGroups extends Component {
     this.state = { groups: [], joinedID: [], isLoggedIn: true };
     this.handleClick = this.handleClick.bind(this);
   }
-  componentDidMount() {
+  UNSAFE_componentWillMount() {
     fetch("/api/user/mygroups", { credentials: "include" })
       .then((res) => res.json())
       .then((groups) => {
